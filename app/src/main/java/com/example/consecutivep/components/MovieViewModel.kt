@@ -1,44 +1,45 @@
 package com.example.consecutivepracts.components
 
+import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModel
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.viewModelScope
+import com.example.consecutivep.domain.IMovieRepository
+import com.example.consecutivep.state.ListState
 import com.example.consecutivepracts.model.Movie
+import ru.urfu.consecutivepractice.coroutinesUtils.launchLoadingAndError
 
-class MovieViewModel : ViewModel() {
-    private val _movies = mutableStateListOf<Movie>()
 
-    val movies: List<Movie>
-        get() = _movies
+class MovieViewModel(
+    private val repository: IMovieRepository
+) : ViewModel() {
+    private val mutableState = MutableListState()
+    val viewState = mutableState as ListState
 
     init {
-        _movies.addAll(listOf(
-            Movie(1, "Дюна", "Наследник знаменитого дома Атрейдесов Пол отправляется вместе с семьей на одну из самых опасных планет во Вселенной — Арракис. Здесь нет ничего, кроме песка, палящего солнца, гигантских чудовищ и основной причины межгалактических конфликтов — невероятно ценного ресурса, который называется меланж. В результате захвата власти Пол вынужден бежать и скрываться, и это становится началом его эпического путешествия. Враждебный мир Арракиса приготовил для него множество тяжелых испытаний, но только тот, кто готов взглянуть в глаза своему страху, достоин стать избранным.",  "https://image.openmoviedb.com/kinopoisk-images/4303601/9eb762d6-4cdd-464f-9937-aebf30067acc/x1000",
-                "3 сентября 2021", "США, Канада, Венгрия", "фантастика, боевик, драма, приключения",
-                "Дени Вильнёв", "Тимоти Шаламе, Ребекка Фергюсон, Оскар Айзек, Джош Бролин, Джейсон Момоа, Зендея, Стеллан Скарсгард, Хавьер Бардем, Дэйв Батиста, Шарлотта Рэмплинг",
-                "2 ч 35 мин"),
-            Movie(2, "Вызов", "Торакальный хирург Женя Беляева за месяц должна подготовиться к космическому полету, чтобы отправиться на МКС и спасти заболевшего космонавта. Ей придётся преодолеть неуверенность и страхи, а также провести сложнейшую операцию в условиях невесомости, от которой зависят шансы космонавта вернуться на Землю живым.",
-                "https://image.openmoviedb.com/kinopoisk-images/10835644/12a8b128-cef9-49bc-b572-b35d7d4fe5b1/x1000",
-                "20 апреля 2023", "Россия", "драма", "Клим Шипенко",
-                "Юлия Пересильд, Милош Бикович, Владимир Машков, Олег Новицкий",
-                "2 ч 44 мин"),
-            Movie(3, "Лобстер", "В ближайшем будущем одиноких людей арестовывают и отправляют в специальный отель. Там они обязаны найти себе пару за 45 дней. Если им это не удается, то их превращают в животных и отпускают в лес.", "https://image.openmoviedb.com/kinopoisk-images/6201401/5b47b85a-f141-456f-a4f7-5a1388b49a9d/x1000", "\n" +
-                    "15 мая 2015", "Ирландия, Великобритания, Греция, Франция, Нидерланды",
-                "драма, мелодрама, триллер, фантастика",
-                "Йоргос Лантимос", "Колин Фаррелл, Рэйчел Вайс, Джессика Барден, Оливия Колман, Джон Си Райли",
-                "1 ч 59 мин"),
-            Movie( 4, "Револьвер", "Семь лет назад Джейк влип в неприятную историю. Город был помешан на нелегальных азартных играх, организованных преступным боссом Мака. Однажды накануне большой игры Мака потерял своего парня, и Джейку Грину предложили пойти на замену. Под давлением Грин согласился и выиграл за карточным столом. С этого всё и началось.", "https://image.openmoviedb.com/kinopoisk-images/4303601/f5332488-ac63-4b32-b2f4-864da3542bca/x1000",
-                "11 сентября 2005", "Великобритания, Франция",
-                "боевик, триллер, драма, криминал, детектив", "Гай Ричи",
-                "Джейсон Стэйтем, Рэй Лиотта, Винсент Пасторе, Андре Бенджамин, Теренс Мэйнард",
-                "1 ч 51 мин"),
-            Movie(5, "Гуманитарные науки", "История о 35-летнем мужчине и студентке колледжа, которых объединяет взаимная любовь к книгам и музыке, но разница в возрасте мешает их отношениям.",
-                "https://image.openmoviedb.com/kinopoisk-images/1599028/e5f2cff0-f8c7-466c-a8a8-296480d722fd/x1000",
-                "22 января 2012", "США", "драма, мелодрама, комедия",
-                "Джош Рэднор", "Джош Рэднор, Элизабет Олсен, Ричард Дженкинс, Эллисон Дженни",
-                "1 ч 37 мин"),
-
-            ))
+        loadFilms()
     }
+
+    private fun loadFilms() {
+        viewModelScope.launchLoadingAndError(
+            handleError = { mutableState.error = it.localizedMessage },
+            updateLoading = { mutableState.loading = it }
+        ) {
+            mutableState.error = null
+
+            mutableState.items = repository.getMovie(viewState.searchName)
+        }
+    }
+
+    private class MutableListState : ListState {
+        override var searchName: String by mutableStateOf("movie")
+        override var items: List<Movie> by mutableStateOf(emptyList())
+        override var error: String? by mutableStateOf(null)
+        override var loading: Boolean by mutableStateOf(false)
+    }
+
 }
 
 

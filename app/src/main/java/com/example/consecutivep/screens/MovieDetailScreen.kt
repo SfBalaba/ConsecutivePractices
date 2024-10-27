@@ -22,11 +22,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.consecutivep.R
+import org.koin.androidx.compose.koinViewModel
 
+@Composable
+fun MovieDetailScreen(movieId: Comparable<*>,
+                      navController: NavController,
+//                      viewModel: MovieViewModel
+) {
+    val viewModel = koinViewModel<MovieViewModel>()
+    val state = viewModel.viewState
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable fun MovieDetailScreen(movieId: Int, navController: NavController, viewModel: MovieViewModel = viewModel()) {
-    val movie = viewModel.movies.find { it.id == movieId }
+    val movie = state.items.find { it.id == movieId }
 
     if (movie != null) {
         Column(
@@ -51,8 +57,7 @@ import com.example.consecutivep.R
             Spacer(modifier = Modifier.height(18.dp))
 
             Text(
-                text = movie.premiere.takeLast(5).replace("г", "") + ", "
-                        + movie.genre,
+                text = "${movie.premiere} г., ${movie.genre.joinToString(", ")}",
                 style = MaterialTheme.typography.bodyLarge,
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 color = Color.Gray
@@ -60,7 +65,7 @@ import com.example.consecutivep.R
             Spacer(modifier = Modifier.height(4.dp))
 
             Text(
-                text = movie.country + ", " + movie.duration,
+                text = "${movie.countries.joinToString(", ")}, ${ movie.duration} мин." ,
                 style = MaterialTheme.typography.bodyLarge,
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 color = Color.Gray
@@ -78,24 +83,29 @@ import com.example.consecutivep.R
                 style = MaterialTheme.typography.bodyLarge
             )
             Spacer(modifier = Modifier.height(24.dp))
-
-            Text(text = "Режиссер: " + movie.director, style = MaterialTheme.typography.bodyLarge)
+            if (movie.director.size>0){
+                Text(
+                    text = "Режиссер: ${movie.director.joinToString(", ")}",
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            }
             Spacer(modifier = Modifier.height(8.dp))
+            if (movie.starring.size>0) {
+                Text(text = "В ролях: ", style = MaterialTheme.typography.bodyLarge,)
 
-            Text(text = "В ролях: ", style = MaterialTheme.typography.bodyLarge,)
-            val actorList: List<String> = movie.starring.split(", ")
-            LazyRow {
-                items(actorList) { actor ->
-                    Text(
-                        actor, style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.padding(8.dp)
-                            .border(
-                                2.dp,
-                                color = colorResource(R.color.pink),
-                                shape = RoundedCornerShape(10.dp)
-                            )
-                            .padding(vertical = 6.dp, horizontal = 10.dp)
-                    )
+                LazyRow {
+                    items(movie.starring) { actor ->
+                        Text(
+                            actor, style = MaterialTheme.typography.bodyLarge,
+                            modifier = Modifier.padding(8.dp)
+                                .border(
+                                    2.dp,
+                                    color = colorResource(R.color.pink),
+                                    shape = RoundedCornerShape(10.dp)
+                                )
+                                .padding(vertical = 6.dp, horizontal = 10.dp)
+                        )
+                    }
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))

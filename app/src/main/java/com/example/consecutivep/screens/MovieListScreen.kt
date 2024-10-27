@@ -23,17 +23,21 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberImagePainter
 import com.example.consecutivepracts.components.MovieViewModel
+import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
-fun MovieListScreen(onMovieClick: (Int) -> Unit) {
-    val viewModel: MovieViewModel = viewModel()
-
+fun MovieListScreen(onMovieClick: (Long) -> Unit) {
+    val viewModel = koinViewModel<MovieViewModel>()
+    val state = viewModel.viewState
+    state.error?.let {
+        Text(text = it)
+    }
     LazyColumn(modifier = Modifier.fillMaxSize()) {
-        items(viewModel.movies) { movie ->
+        items(state.items) { movie ->
             ListItem(
                 modifier = Modifier
-                    .clickable { onMovieClick(movie.id) }
+                    .clickable { onMovieClick(movie.id, ) }
                     .padding(8.dp).shadow(10.dp).clip(
                     RoundedCornerShape(10.dp)),
                 headlineContent = {
