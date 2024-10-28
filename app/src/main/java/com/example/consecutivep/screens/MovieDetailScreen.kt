@@ -16,24 +16,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.navigation.NavController
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.consecutivep.R
-import org.koin.androidx.compose.koinViewModel
+import com.example.consecutivepracts.model.Movie
 
 @Composable
-fun MovieDetailScreen(movieId: Comparable<*>,
-                      navController: NavController,
-//                      viewModel: MovieViewModel
-) {
-    val viewModel = koinViewModel<MovieViewModel>()
-    val state = viewModel.viewState
-
-    val movie = state.items.find { it.id == movieId }
-
+fun MovieDetailScreen(movie: Movie)
+{
     if (movie != null) {
         Column(
             modifier = Modifier.padding(16.dp)

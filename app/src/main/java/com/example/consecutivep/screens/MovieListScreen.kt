@@ -27,8 +27,7 @@ import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
-fun MovieListScreen(onMovieClick: (Long) -> Unit) {
-    val viewModel = koinViewModel<MovieViewModel>()
+fun MovieListScreen(viewModel: MovieViewModel, onMovieClick: (Long) -> Unit) {
     val state = viewModel.viewState
     state.error?.let {
         Text(text = it)

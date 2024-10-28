@@ -2,7 +2,6 @@ package com.example.consecutivepracts.components
 
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModel
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
@@ -10,6 +9,7 @@ import com.example.consecutivep.domain.IMovieRepository
 import com.example.consecutivep.state.ListState
 import com.example.consecutivepracts.model.Movie
 import ru.urfu.consecutivepractice.coroutinesUtils.launchLoadingAndError
+import java.io.IOException
 
 
 class MovieViewModel(
@@ -24,11 +24,14 @@ class MovieViewModel(
 
     private fun loadFilms() {
         viewModelScope.launchLoadingAndError(
-            handleError = { mutableState.error = it.localizedMessage },
+            handleError = { error ->
+                mutableState.error = when (error) {
+                    is IOException -> "Проверьте подключение к интернету."
+                    else -> error.localizedMessage
+                }},
             updateLoading = { mutableState.loading = it }
         ) {
             mutableState.error = null
-
             mutableState.items = repository.getMovie(viewState.searchName)
         }
     }
@@ -39,6 +42,9 @@ class MovieViewModel(
         override var error: String? by mutableStateOf(null)
         override var loading: Boolean by mutableStateOf(false)
     }
+
+
+
 
 }
 
