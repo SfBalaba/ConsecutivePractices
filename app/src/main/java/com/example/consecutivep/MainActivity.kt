@@ -5,11 +5,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.BadgedBox
 import androidx.compose.material3.Icon
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.Badge
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -29,6 +31,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.NavController
+import com.example.consecutivep.utils.LocalUtils.isFilter
 import com.example.consecutivepracts.components.MovieViewModel
 import com.example.consecutivepracts.model.Movie
 import com.example.consecutivepracts.screens.HomeScreen
@@ -112,6 +115,7 @@ fun MainScreen() {
                 currentDestination = "home"
                 HomeScreen()
             }
+
             composable("settings") {
                 currentDestination = "settings"
                 SettingsScreen()
@@ -131,12 +135,24 @@ fun BottomNavigationBar(navController: NavController, currentDestination: String
         val items = listOf(
             BottomNavItem("Home", "home", R.drawable.home),
             BottomNavItem("Movies", "movies", R.drawable.list),
-            BottomNavItem("Settings", "settings", R.drawable.settings)
+            BottomNavItem("Settings", "settings", R.drawable.settings),
         )
 
         items.forEach { item ->
             BottomNavigationItem(
-                icon = { Icon(painter = painterResource(id = item.iconResId), contentDescription = item.title) },
+
+                    icon = {
+                        BadgedBox(
+                            badge=  {
+                                if(isFilter.value && item.route == "movies"){
+                                    Badge()
+                                }
+                            }
+                        ) {
+                            Icon(painter = painterResource(id = item.iconResId), contentDescription = item.title)
+                        }
+                    },
+//                 icon = { Icon(painter = painterResource(id = item.iconResId), contentDescription = item.title) },
                 label = { Text(item.title) },
                 selected = currentDestination == item.route,
                 onClick = {

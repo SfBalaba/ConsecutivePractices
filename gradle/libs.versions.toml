@@ -25,6 +25,8 @@ retrofit = "2.11.0"
 composeWheelPicker = "1.0.0-beta05"
 ui = "1.2.0"
 uiTooling = "1.2.0"
+datastoreCoreAndroid = "1.1.1"
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -61,8 +63,12 @@ compose-wheelPicker = { module = "com.github.zj565061763:compose-wheel-picker", 
 ui = { module = "androidx.compose.ui:ui", version.ref = "ui" }
 ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "uiTooling" }
 ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+androidx-datastore-core-android = { group = "androidx.datastore", name = "datastore-core-android", version.ref = "datastoreCoreAndroid" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+
 

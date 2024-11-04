@@ -11,5 +11,5 @@ import org.koin.dsl.module
 val rootModule = module {
     single<IMovieRepository> { MovieRepository(get(), get()) }
     factory { MovieResponseToEntityMapper() }
-    viewModel { MovieViewModel(get()) }
+    viewModel { MovieViewModel(get(), get()) }
 }

@@ -39,6 +39,7 @@ android {
     }
     buildFeatures {
         compose = true
+        viewBinding = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
@@ -48,6 +49,7 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    buildToolsVersion = "34.0.0"
 }
 
 dependencies {
@@ -86,4 +88,11 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.gson)
     implementation(libs.compose.wheelPicker)
+    implementation(libs.androidx.datastore.core.android)
+
+    implementation ("androidx.datastore:datastore-preferences:1.1.1")
+    implementation ("androidx.datastore:datastore-preferences-rxjava2:1.1.1")
+    implementation ("androidx.datastore:datastore-preferences-rxjava3:1.1.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
 }

@@ -6,6 +6,7 @@ import com.example.consecutivepracts.model.Movie
 @Stable
 interface ListState {
     val searchName: String
+    val filterContentStatus: String
     val items: List<Movie>
     val error: String?
     var loading: Boolean
