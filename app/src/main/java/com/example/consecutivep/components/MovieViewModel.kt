@@ -1,5 +1,4 @@
-package com.example.consecutivepracts.components
-
+package com.example.consecutivep.components
 
 import android.content.Context
 import androidx.compose.runtime.getValue
@@ -14,14 +13,13 @@ import com.example.consecutivep.utils.LocalUtils.isFilter
 import com.example.consecutivepracts.model.Movie
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import ru.urfu.consecutivepractice.coroutinesUtils.launchLoadingAndError
 import java.io.IOException
+import java.net.UnknownHostException
 import java.util.logging.Logger
 
-//private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("dataStore_settings")
 
 class MovieViewModel(
-    val context: Context,
+    context: Context,
     private val repository: IMovieRepository
 ) : ViewModel() {
     private val mutableState = MutableListState()
@@ -30,7 +28,8 @@ class MovieViewModel(
     init {
         loadTmp()
     }
-    private fun loadTmp() {
+
+    fun loadTmp() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 dataStoreManager.getSettings().collect { settings ->
@@ -54,16 +53,27 @@ class MovieViewModel(
 
     private fun loadFilms(type: String, contentStatus: String) {
         LOG.info("loadFilms, $type, $contentStatus")
-        viewModelScope.launchLoadingAndError(
-            handleError = { error ->
-                mutableState.error = when (error) {
-                    is IOException -> "Проверьте подключение к интернету."
-                    else -> error.localizedMessage
-                }},
-            updateLoading = { mutableState.loading = it }
-        ) {
-            mutableState.error = null
-            mutableState.items = repository.getMovie(type, contentStatus )
+
+        viewModelScope.launch {
+            try {
+                mutableState.loading = true
+                mutableState.error = null
+                mutableState.items = emptyList()
+                mutableState.items = repository.getMovie(type, contentStatus)
+
+            } catch (e: IOException) {
+                mutableState.error =
+                    "Проблемы с подключением к интернету. Проверьте ваше подключение."
+
+            } catch (e: UnknownHostException) {
+                mutableState.error = "Не удается найти сервер. Проверьте ваше подключение."
+
+            } catch (e: Exception) {
+                mutableState.error = "Произошла ошибка: ${e.localizedMessage}"
+
+            } finally {
+                mutableState.loading = false
+            }
         }
     }
 
