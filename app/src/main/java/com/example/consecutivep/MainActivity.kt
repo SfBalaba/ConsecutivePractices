@@ -29,11 +29,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.NavController
-import com.example.consecutivepracts.components.MovieViewModel
+import com.example.consecutivep.components.MovieViewModel
 import com.example.consecutivepracts.model.Movie
 import com.example.consecutivepracts.screens.HomeScreen
 import com.example.consecutivepracts.screens.MovieDetailScreen
-import com.example.consecutivepracts.screens.MovieListScreen
+import com.example.consecutivep.screens.MovieListScreen
 import com.example.consecutivepracts.screens.SettingsScreen
 import org.koin.androidx.compose.koinViewModel
 
@@ -53,10 +53,10 @@ class MainActivity : ComponentActivity() {
 fun MainScreen() {
     val navController = rememberNavController()
     var currentDestination by remember { mutableStateOf("movies") }
-    val viewModel = koinViewModel<MovieViewModel>()
+    val viewModel: MovieViewModel = koinViewModel<MovieViewModel>()
     val state = viewModel.viewState
     viewModel.viewState.error?.let {
-        Text(text = it.toString())
+        Text(text = it)
     }
     Scaffold(
         topBar = {
@@ -66,7 +66,7 @@ fun MainScreen() {
                     titleContentColor = MaterialTheme.colorScheme.primary,
                 ),
                 title = {
-                    androidx.compose.material3.Text("Фильмы")
+                    Text("Фильмы")
                 },
                 actions = {
                     IconButton(onClick = { navController.popBackStack() }) {
@@ -95,7 +95,6 @@ fun MainScreen() {
                 }
             }
             composable("movie_detail/{movieId}") { backStackEntry ->
-                val movieId = backStackEntry.arguments?.getString("movieId") ?.toLong() ?: 0
                 currentDestination = "movie_detail"
                 val id = backStackEntry.arguments?.getString("movieId")?.toLong()?: 0L
 
