@@ -20,6 +20,15 @@ android {
             useSupportLibrary = true
         }
     }
+    buildFeatures {
+        compose = true
+        buildConfig = true
+    }
+
+    defaultConfig {
+
+        buildConfigField("String", "MOVIE_API_KEY", "\"${project.findProperty("MOVIE_API_KEY")}\"")
+    }
 
     buildTypes {
         release {
@@ -37,9 +46,7 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    buildFeatures {
-        compose = true
-    }
+
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
     }
