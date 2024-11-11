@@ -34,6 +34,7 @@ import androidx.navigation.NavController
 import com.example.consecutivep.utils.LocalUtils.isFilter
 
 import com.example.consecutivep.components.MovieViewModel
+import com.example.consecutivep.screens.FavoritesScreen
 import com.example.consecutivepracts.model.Movie
 import com.example.consecutivepracts.screens.HomeScreen
 import com.example.consecutivepracts.screens.MovieDetailScreen
@@ -119,6 +120,10 @@ fun MainScreen() {
                 currentDestination = "settings"
                 SettingsScreen()
             }
+            composable("favorites"){
+                currentDestination = "favorites"
+                FavoritesScreen(navController)
+            }
 
         }
     }
@@ -135,6 +140,8 @@ fun BottomNavigationBar(navController: NavController, currentDestination: String
             BottomNavItem("Home", "home", R.drawable.home),
             BottomNavItem("Movies", "movies", R.drawable.list),
             BottomNavItem("Settings", "settings", R.drawable.settings),
+            BottomNavItem("favorites", "favorites", R.drawable.favorite),
+
         )
 
         items.forEach { item ->
@@ -151,7 +158,6 @@ fun BottomNavigationBar(navController: NavController, currentDestination: String
                             Icon(painter = painterResource(id = item.iconResId), contentDescription = item.title)
                         }
                     },
-//                 icon = { Icon(painter = painterResource(id = item.iconResId), contentDescription = item.title) },
                 label = { Text(item.title) },
                 selected = currentDestination == item.route,
                 onClick = {
