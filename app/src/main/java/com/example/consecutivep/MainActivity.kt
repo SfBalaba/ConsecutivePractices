@@ -4,14 +4,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -28,14 +26,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.NavController
+import com.example.consecutivep.components.MovieViewModel
+import com.example.consecutivep.presentation.model.MovieUiModel
+import com.example.consecutivepracts.model.Movie
 import com.example.consecutivepracts.screens.HomeScreen
 import com.example.consecutivepracts.screens.MovieDetailScreen
-import com.example.consecutivepracts.screens.MovieListScreen
+import com.example.consecutivep.screens.MovieListScreen
 import com.example.consecutivepracts.screens.SettingsScreen
+import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,7 +54,11 @@ class MainActivity : ComponentActivity() {
 fun MainScreen() {
     val navController = rememberNavController()
     var currentDestination by remember { mutableStateOf("movies") }
-
+    val viewModel: MovieViewModel = koinViewModel<MovieViewModel>()
+    val state = viewModel.viewState
+    viewModel.viewState.error?.let {
+        Text(text = it)
+    }
     Scaffold(
         topBar = {
             TopAppBar(
@@ -62,7 +67,7 @@ fun MainScreen() {
                     titleContentColor = MaterialTheme.colorScheme.primary,
                 ),
                 title = {
-                    androidx.compose.material3.Text("Фильмы")
+                    Text("Фильмы")
                 },
                 actions = {
                     IconButton(onClick = { navController.popBackStack() }) {
@@ -85,15 +90,22 @@ fun MainScreen() {
         NavHost(navController = navController, startDestination = "home", Modifier.padding(innerPadding)) {
             composable("movies") {
                 currentDestination = "movies"
-                MovieListScreen { movieId ->
+                MovieListScreen(viewModel) { movieId ->
                     navController.navigate("movie_detail/$movieId") {
                     }
                 }
             }
             composable("movie_detail/{movieId}") { backStackEntry ->
-                val movieId = backStackEntry.arguments?.getString("movieId")?.toInt() ?: 0
                 currentDestination = "movie_detail"
-                MovieDetailScreen(movieId, navController)
+                val id = backStackEntry.arguments?.getString("movieId")?.toLong()?: 0L
+
+                val movie: MovieUiModel? = id?.let {
+                    state.items.find { it.id == id }
+                }
+
+                if (movie != null) {
+                    MovieDetailScreen(movie)
+                    }
             }
 
             composable("home") {
@@ -108,6 +120,7 @@ fun MainScreen() {
         }
     }
 }
+
 
 @Composable
 fun BottomNavigationBar(navController: NavController, currentDestination: String, onDestinationChanged: (String) -> Unit) {

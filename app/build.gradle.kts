@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("kotlin-parcelize")
 }
 
 android {
@@ -19,6 +20,15 @@ android {
             useSupportLibrary = true
         }
     }
+    buildFeatures {
+        compose = true
+        buildConfig = true
+    }
+
+    defaultConfig {
+
+        buildConfigField("String", "MOVIE_API_KEY", "\"${project.findProperty("MOVIE_API_KEY")}\"")
+    }
 
     buildTypes {
         release {
@@ -36,9 +46,7 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    buildFeatures {
-        compose = true
-    }
+
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
     }
@@ -59,17 +67,17 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation ("androidx.navigation:navigation-compose:2.5.0")
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.0")
-    implementation ("androidx.compose.material:material:1.2.0")
-    implementation ("androidx.compose.ui:ui:1.2.0")
-    implementation ("androidx.compose.ui:ui-tooling:1.2.0")
-    implementation("io.coil-kt:coil-compose:2.4.0")
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
-    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.5.1")
-    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0")
-    implementation("androidx.compose.ui:ui-tooling-preview")
+    implementation (libs.androidx.navigation.compose.v283)
+    implementation (libs.androidx.lifecycle.viewmodel.compose)
+    implementation (libs.androidx.material)
+    implementation (libs.ui)
+    implementation (libs.ui.tooling)
+    implementation(libs.coil.compose)
+    implementation (libs.androidx.lifecycle.viewmodel.ktx)
+    implementation (libs.androidx.lifecycle.livedata.ktx)
+    implementation (libs.androidx.lifecycle.runtime.ktx.v251)
+    implementation (libs.kotlinx.coroutines.android)
+    implementation(libs.ui.tooling.preview)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -77,4 +85,12 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(libs.koin.android)
+    implementation(libs.koin.compose)
+    implementation(libs.koin.androidx.compose)
+    implementation(libs.debug.logcat)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.gson)
+    implementation(libs.compose.wheelPicker)
 }
