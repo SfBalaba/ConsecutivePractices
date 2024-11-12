@@ -11,12 +11,17 @@ fun CoroutineScope.launchLoadingAndError(
     updateLoading: (Boolean) -> Unit,
     block: suspend CoroutineScope.() -> Unit
 ): Job {
-    val context =
-        CoroutineExceptionHandler { _, throwable -> handleError.invoke(throwable) } +
-            LoadingContextHandler(updateLoading)
+    val context = CoroutineExceptionHandler { _, throwable -> handleError.invoke(throwable) }
 
-    return launch(context) {
-        handleLoading(this, block)
+    val loadingHandler = LoadingContextHandler(updateLoading)
+
+    return launch(context + loadingHandler) {
+        try {
+            loadingHandler.showProgress()
+            block()
+        } finally {
+            loadingHandler.hideProgress()
+        }
     }
 }
 
@@ -29,16 +34,4 @@ class LoadingContextHandler(
 
     fun showProgress() = updateLoading.invoke(true)
     fun hideProgress() = updateLoading.invoke(false)
-}
-
-private suspend fun <T> handleLoading(
-    coroutineScope: CoroutineScope,
-    block: suspend CoroutineScope.() -> T
-): Result<T> {
-    return coroutineScope.runCatching {
-        coroutineScope.coroutineContext[LoadingContextHandler]?.showProgress()
-        block()
-    }.also {
-        coroutineScope.coroutineContext[LoadingContextHandler]?.hideProgress()
-    }
 }
