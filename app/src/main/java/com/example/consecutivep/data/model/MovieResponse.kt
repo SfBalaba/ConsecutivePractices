@@ -10,7 +10,7 @@ data class MovieResponse(
     val description: String?,
     val year: Int?,
     val rating: RatingResponse?,
-    @SerializedName("movieLength") val movieLength: Int?,
+    val movieLength: Int?,
     val genres: List<GenreResponse?>?,
     val countries: List<CountryResponse?>?,
     val poster: PosterResponse?,

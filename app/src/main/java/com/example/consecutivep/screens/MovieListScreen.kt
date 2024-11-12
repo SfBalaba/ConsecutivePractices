@@ -35,6 +35,7 @@ import coil.compose.rememberImagePainter
 import com.example.consecutivep.components.FavoriteViewModel
 import com.example.consecutivep.ui.theme.components.LoadingScreen
 import com.example.consecutivep.components.MovieViewModel
+import com.example.consecutivep.presentation.model.MovieUiModel
 import com.example.consecutivep.model.MovieEntity
 import com.example.consecutivepracts.model.Movie
 
@@ -70,12 +71,14 @@ fun MovieListScreen(viewModel: MovieViewModel, onMovieClick: (Long) -> Unit) {
 
 
 @Composable
-private fun ConstructorItem(movie: Movie, onMovieClick: (Long) -> Unit) {
+private fun ConstructorItem(movie: MovieUiModel, onMovieClick: (Long) -> Unit) {
+
     val favoriteViewMovie: FavoriteViewModel = viewModel()
     val isFavorite = favoriteViewMovie.favoriteMovieList.any { it.id.toLong() == movie.id }
 
     ListItem(modifier = Modifier
         .clickable { onMovieClick(movie.id) }
+        .padding(8.dp)
         .shadow(10.dp)
         .clip(
             RoundedCornerShape(10.dp)

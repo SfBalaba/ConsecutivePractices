@@ -35,6 +35,7 @@ import com.example.consecutivep.utils.LocalUtils.isFilter
 
 import com.example.consecutivep.components.MovieViewModel
 import com.example.consecutivep.screens.FavoritesScreen
+import com.example.consecutivep.presentation.model.MovieUiModel
 import com.example.consecutivepracts.model.Movie
 import com.example.consecutivepracts.screens.HomeScreen
 import com.example.consecutivepracts.screens.MovieDetailScreen
@@ -103,7 +104,7 @@ fun MainScreen() {
                 currentDestination = "movie_detail"
                 val id = backStackEntry.arguments?.getString("movieId")?.toLong()?: 0L
 
-                val movie: Movie? = id?.let {
+                val movie: MovieUiModel? = id?.let {
                     state.items.find { it.id == id }
                 }
 
