@@ -37,6 +37,7 @@ import com.example.consecutivep.ui.theme.components.LoadingScreen
 import com.example.consecutivep.components.MovieViewModel
 import com.example.consecutivep.presentation.model.MovieUiModel
 import com.example.consecutivep.model.MovieEntity
+import com.example.consecutivep.utils.MovieEntityMapper
 import com.example.consecutivepracts.model.Movie
 
 
@@ -106,15 +107,7 @@ private fun ConstructorItem(movie: MovieUiModel, onMovieClick: (Long) -> Unit) {
             }
             IconButton(
                 onClick = {
-                    val movieEntity = MovieEntity(
-                        id=movie.id.toString(),
-                        title=movie.title,
-                        genres = movie.genre.joinToString(", "),
-                        imageUrl = movie.posterUrl,
-                        year = movie.premiere,
-                        country = movie.countries.joinToString(", "),
-                        description = movie.description,
-                    )
+                    val movieEntity = MovieEntityMapper.toEntity(movie)
                     if (isFavorite) {
                         favoriteViewMovie.removeMovieFromFavorite(movieEntity)
                     } else {

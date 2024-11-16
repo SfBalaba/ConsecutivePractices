@@ -34,9 +34,8 @@ import androidx.navigation.NavController
 import com.example.consecutivep.utils.LocalUtils.isFilter
 
 import com.example.consecutivep.components.MovieViewModel
-import com.example.consecutivep.screens.FavoritesScreen
 import com.example.consecutivep.presentation.model.MovieUiModel
-import com.example.consecutivepracts.model.Movie
+import com.example.consecutivep.screens.FavoritesScreen
 import com.example.consecutivepracts.screens.HomeScreen
 import com.example.consecutivepracts.screens.MovieDetailScreen
 import com.example.consecutivep.screens.MovieListScreen

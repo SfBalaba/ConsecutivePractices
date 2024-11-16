@@ -14,5 +14,5 @@ val rootModule = module {
     factory { MovieResponseToEntityMapper() }
     factory { MovieUiMapper() }
 
-    viewModel { MovieViewModel(get(), get()) }
+    viewModel { MovieViewModel(get(), get(), get()) }
 }

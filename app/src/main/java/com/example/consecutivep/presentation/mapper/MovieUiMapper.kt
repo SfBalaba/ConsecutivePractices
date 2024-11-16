@@ -1,6 +1,5 @@
 package com.example.consecutivep.presentation.mapper
 
-import androidx.compose.ui.graphics.Color
 import com.example.consecutivep.presentation.model.MovieUiModel
 import com.example.consecutivepracts.model.Movie
 
