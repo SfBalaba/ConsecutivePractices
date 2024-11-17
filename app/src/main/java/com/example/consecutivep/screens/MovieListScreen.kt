@@ -76,7 +76,6 @@ fun MovieListScreen(viewModel: MovieViewModel, onMovieClick: (Long) -> Unit) {
         modifier = Modifier.fillMaxSize()
     ){
 
-//        contentWindowInsets = WindowInsets(0.dp),
 
             val lazyColumnState = rememberSaveable(saver = LazyListState.Saver) {
                 LazyListState(

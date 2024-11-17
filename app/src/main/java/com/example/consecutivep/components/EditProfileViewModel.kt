@@ -27,6 +27,8 @@ class EditProfileViewModel(
                 mutableState.photoUri = Uri.parse(it.photoUri)
             }
         }
+        mutableState.isNeedToShowPermission = true
+
     }
 
     fun onNameChanged(name: String) {
@@ -39,13 +41,32 @@ class EditProfileViewModel(
 
     fun onDoneClicked() {
         viewModelScope.launch {
-            repository.setProfile("", viewState.name, viewState.url)
+            repository.setProfile(mutableState.photoUri.toString(), viewState.name, viewState.url)
+
         }
+    }
+
+    fun onImageSelected(uri: Uri?) {
+        uri?.let { mutableState.photoUri = it }
+    }
+
+    fun onPermissionClosed() {
+        mutableState.isNeedToShowPermission = false
+    }
+
+    fun onAvatarClicked() {
+        mutableState.isNeedToShowSelect = true
+    }
+
+    fun onSelectDismiss() {
+        mutableState.isNeedToShowSelect = false
     }
 
     private class MutableEditProfileState : EditProfileState {
         override var photoUri: Uri by mutableStateOf(Uri.EMPTY)
         override var name by mutableStateOf("")
         override var url by mutableStateOf("")
+        override var isNeedToShowPermission by mutableStateOf(true)
+        override var isNeedToShowSelect: Boolean by mutableStateOf(false)
     }
 }

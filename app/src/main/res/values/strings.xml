@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">ConsecutivePractices</string>
-    <string name="profile">profile</string>
+    <string name="profile">Профиль</string>
     <string name="name">ФИО</string>
-    <string name="link">ссылка</string>
-
+    <string name="link">ссылка на резюме</string>
+    <string name="edit_profile">Редактирование</string>
 </resources>

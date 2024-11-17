@@ -11,7 +11,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import com.example.consecutivep.domain.repository.IProfileRepository
 import com.example.consecutivep.presentation.profile.model.state.ProfileState
-import com.example.consecutivep.presentation.profile.screen.ProfileScreen
 
 class ProfileViewModel(
     private val repository: IProfileRepository
@@ -24,7 +23,7 @@ class ProfileViewModel(
         viewModelScope.launch {
             repository.observeProfile().collect {
                 mutableState.name = it.name
-                //mutableState.photoUri = Uri.parse(it.photoUri)
+                mutableState.photoUri = Uri.parse(it.photoUri)
             }
         }
     }

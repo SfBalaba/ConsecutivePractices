@@ -6,5 +6,6 @@ interface EditProfileState {
     val photoUri: Uri
     val name: String
     val url: String
-
+    val isNeedToShowPermission: Boolean
+    val isNeedToShowSelect: Boolean
 }
