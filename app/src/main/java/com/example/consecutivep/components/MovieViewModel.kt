@@ -28,14 +28,13 @@ import kotlinx.coroutines.launch
 class MovieViewModel(
     private val repository: IMovieRepository,
     private val uiMapper: MovieUiMapper,
-    context: Context,
+    private val dataStoreManager : DataStoreManager
 ) : ViewModel() {
 
     private val mutableState = MutableListState()
     val viewState = mutableState as ListState
-    private val dataStoreManager = DataStoreManager(context)
 
-    // StateFlow для фильтров
+
     private val _filterParams = MutableStateFlow(FilterParams())
     val filterParams = _filterParams
 
