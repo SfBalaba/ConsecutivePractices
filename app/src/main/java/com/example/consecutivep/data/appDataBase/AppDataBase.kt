@@ -5,7 +5,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.consecutivep.dao.MovieDao
+import com.example.consecutivep.data.dao.MovieDao
 import com.example.consecutivep.model.MovieEntity
 
 

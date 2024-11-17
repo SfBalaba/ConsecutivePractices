@@ -1,4 +1,4 @@
-package com.example.consecutivep.dao
+package com.example.consecutivep.data.dao
 
 import androidx.room.Dao
 import androidx.room.Delete

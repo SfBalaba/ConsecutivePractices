@@ -11,7 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
-import com.example.consecutivep.dao.MovieDao
+import com.example.consecutivep.data.dao.MovieDao
 import com.example.consecutivep.data.appDataBase.AppDatabase
 import com.example.consecutivep.model.MovieEntity
 

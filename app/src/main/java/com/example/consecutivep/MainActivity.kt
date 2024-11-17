@@ -36,6 +36,8 @@ import com.example.consecutivep.utils.LocalUtils.isFilter
 
 import com.example.consecutivep.components.MovieViewModel
 import com.example.consecutivep.presentation.model.MovieUiModel
+import com.example.consecutivep.presentation.profile.screen.EditProfileScreen
+import com.example.consecutivep.presentation.profile.screen.ProfileScreen
 import com.example.consecutivep.screens.FavoritesScreen
 import com.example.consecutivepracts.screens.HomeScreen
 import com.example.consecutivepracts.screens.MovieDetailScreen
@@ -126,6 +128,14 @@ fun MainScreen() {
                 currentDestination = "favorites"
                 FavoritesScreen(navController)
             }
+            composable("profile"){
+                currentDestination = "profile"
+                ProfileScreen(navController)
+            }
+            composable("edit"){
+                currentDestination = "edit"
+                EditProfileScreen(navController)
+            }
 
         }
     }
@@ -143,6 +153,7 @@ fun BottomNavigationBar(navController: NavController, currentDestination: String
             BottomNavItem("Movies", "movies", R.drawable.list),
             BottomNavItem("Settings", "settings", R.drawable.settings),
             BottomNavItem("favorites", "favorites", R.drawable.favorite),
+            BottomNavItem("profile", "profile", R.drawable.profile)
 
         )
 

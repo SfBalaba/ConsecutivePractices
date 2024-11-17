@@ -1,8 +1,13 @@
+import com.google.protobuf.gradle.id
+
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("kotlin-parcelize")
     id("com.google.devtools.ksp")
+    id("com.google.protobuf") version "0.9.4"
+
 }
 
 android {
@@ -60,10 +65,27 @@ android {
         }
     }
     buildToolsVersion = "34.0.0"
+
+    protobuf {
+        protoc {
+            artifact = "com.google.protobuf:protoc:3.24.2"
+        }
+        generateProtoTasks {
+            all().forEach { task ->
+                task.builtins {
+                    id("java") {
+                        option("lite")
+                    }
+                    id("kotlin") {
+                        option("lite")
+                    }
+                }
+            }
+        }
+    }
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -140,5 +162,10 @@ dependencies {
     implementation("androidx.room:room-paging:$room_version")
 
     implementation("io.insert-koin:koin-android:4.0.0")
+
+    // Proto datastore
+    implementation(libs.androidx.datastore)
+    implementation(libs.protobuf.javalite)
+    implementation(libs.protobuf.kotlin.lite)
 
 }
