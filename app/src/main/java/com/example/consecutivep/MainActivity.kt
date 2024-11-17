@@ -31,6 +31,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.NavController
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.consecutivep.utils.LocalUtils.isFilter
 
 import com.example.consecutivep.components.MovieViewModel
@@ -103,9 +104,10 @@ fun MainScreen() {
                 currentDestination = "movie_detail"
                 val id = backStackEntry.arguments?.getString("movieId")?.toLong()?: 0L
 
-                val movie: MovieUiModel? = id?.let {
-                    state.items.find { it.id == id }
-                }
+                val pagingItems = viewModel.pagedMovies.collectAsLazyPagingItems()
+                val movie = (0 until pagingItems.itemCount)
+                        .mapNotNull { index -> pagingItems[index] }
+                    .find { it.id == id }
 
                 if (movie != null) {
                     MovieDetailScreen(movie)
@@ -118,7 +120,7 @@ fun MainScreen() {
             }
             composable("settings") {
                 currentDestination = "settings"
-                SettingsScreen()
+                SettingsScreen(viewModel)
             }
             composable("favorites"){
                 currentDestination = "favorites"

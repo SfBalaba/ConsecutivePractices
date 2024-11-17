@@ -107,6 +107,11 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
     implementation ("com.github.bumptech.glide:glide:4.16.0")
 
+    val paging_version = "3.2.0"
+
+    implementation("androidx.paging:paging-runtime:$paging_version")
+
+    implementation("androidx.paging:paging-compose:1.0.0-alpha20")
 
     val room_version = "2.6.1"
 

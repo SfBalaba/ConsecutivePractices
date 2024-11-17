@@ -35,6 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.consecutivep.components.MovieViewModel
 import com.example.consecutivep.datastore.SettingsData
 import com.example.consecutivep.datastore.DataStoreManager
 import com.example.consecutivep.utils.LocalUtils.contentStatus
@@ -43,7 +44,7 @@ import com.example.consecutivep.utils.LocalUtils.types
 import kotlinx.coroutines.launch
 
 @Composable
-fun SettingsScreen() {
+fun SettingsScreen(viewModel : MovieViewModel) {
     val context = LocalContext.current
     val dataStoreManager = DataStoreManager(context)
 
@@ -85,6 +86,7 @@ fun SettingsScreen() {
                             dataStoreManager.saveSettings(
                                 SettingsData(selectedType, selectedStatus)
                             )
+                            viewModel.updateFilters(selectedType, selectedStatus)
                         }
                     }
 
