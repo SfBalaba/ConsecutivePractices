@@ -62,17 +62,19 @@ fun MovieDetailScreen(movie: MovieUiModel)
         )
         Spacer(modifier = Modifier.height(24.dp))
 
-        Text(
-            text = "Больше о фильме \"${movie.title}\"", fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-        )
-        Spacer(modifier = Modifier.height(12.dp))
+        if(movie.description.isNotEmpty()){
+            Text(
+                text = "Больше о фильме \"${movie.title}\"", fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+            )
+            Spacer(modifier = Modifier.height(12.dp))
 
-        Text(
-            text = movie.description,
-            style = MaterialTheme.typography.bodyLarge
-        )
-        Spacer(modifier = Modifier.height(24.dp))
+            Text(
+                text = movie.description,
+                style = MaterialTheme.typography.bodyLarge
+            )
+            Spacer(modifier = Modifier.height(24.dp))
+        }
         if (!movie.director.isNullOrEmpty()){
             Text(
                 text = "Режиссер: ${movie.director}",

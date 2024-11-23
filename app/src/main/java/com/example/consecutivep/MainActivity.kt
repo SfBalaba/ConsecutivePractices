@@ -5,11 +5,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.BadgedBox
 import androidx.compose.material3.Icon
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.Badge
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -29,9 +31,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.NavController
+import androidx.paging.compose.collectAsLazyPagingItems
+import com.example.consecutivep.utils.LocalUtils.isFilter
+
 import com.example.consecutivep.components.MovieViewModel
 import com.example.consecutivep.presentation.model.MovieUiModel
-import com.example.consecutivepracts.model.Movie
+import com.example.consecutivep.presentation.profile.screen.EditProfileScreen
+import com.example.consecutivep.presentation.profile.screen.ProfileScreen
+import com.example.consecutivep.screens.FavoritesScreen
 import com.example.consecutivepracts.screens.HomeScreen
 import com.example.consecutivepracts.screens.MovieDetailScreen
 import com.example.consecutivep.screens.MovieListScreen
@@ -61,23 +68,27 @@ fun MainScreen() {
     }
     Scaffold(
         topBar = {
-            TopAppBar(
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
-                ),
-                title = {
-                    Text("Фильмы")
-                },
-                actions = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Назад"
-                        )
-                    }
-                },
-            )
+            if (currentDestination != "profile" && currentDestination != "edit") {
+                TopAppBar(
+
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        titleContentColor = MaterialTheme.colorScheme.primary,
+                    ),
+                    title = {
+                        Text("Фильмы")
+                    },
+                    actions = {
+                        IconButton(onClick = { navController.popBackStack() }) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = "Назад"
+                            )
+                        }
+                    },
+                )
+
+            }
         },
         bottomBar = {
             if (!currentDestination.startsWith("movie_detail")) {
@@ -99,9 +110,10 @@ fun MainScreen() {
                 currentDestination = "movie_detail"
                 val id = backStackEntry.arguments?.getString("movieId")?.toLong()?: 0L
 
-                val movie: MovieUiModel? = id?.let {
-                    state.items.find { it.id == id }
-                }
+                val pagingItems = viewModel.pagedMovies.collectAsLazyPagingItems()
+                val movie = (0 until pagingItems.itemCount)
+                        .mapNotNull { index -> pagingItems[index] }
+                    .find { it.id == id }
 
                 if (movie != null) {
                     MovieDetailScreen(movie)
@@ -114,7 +126,19 @@ fun MainScreen() {
             }
             composable("settings") {
                 currentDestination = "settings"
-                SettingsScreen()
+                SettingsScreen(viewModel)
+            }
+            composable("favorites"){
+                currentDestination = "favorites"
+                FavoritesScreen(navController)
+            }
+            composable("profile"){
+                currentDestination = "profile"
+                ProfileScreen(navController)
+            }
+            composable("edit"){
+                currentDestination = "edit"
+                EditProfileScreen(navController)
             }
 
         }
@@ -131,12 +155,26 @@ fun BottomNavigationBar(navController: NavController, currentDestination: String
         val items = listOf(
             BottomNavItem("Home", "home", R.drawable.home),
             BottomNavItem("Movies", "movies", R.drawable.list),
-            BottomNavItem("Settings", "settings", R.drawable.settings)
+            BottomNavItem("Settings", "settings", R.drawable.settings),
+            BottomNavItem("favorites", "favorites", R.drawable.favorite),
+            BottomNavItem("profile", "profile", R.drawable.profile)
+
         )
 
         items.forEach { item ->
             BottomNavigationItem(
-                icon = { Icon(painter = painterResource(id = item.iconResId), contentDescription = item.title) },
+
+                    icon = {
+                        BadgedBox(
+                            badge=  {
+                                if(isFilter.value && item.route == "movies"){
+                                    Badge()
+                                }
+                            }
+                        ) {
+                            Icon(painter = painterResource(id = item.iconResId), contentDescription = item.title)
+                        }
+                    },
                 label = { Text(item.title) },
                 selected = currentDestination == item.route,
                 onClick = {

@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+option java_package = "com.example.consecutivep.domain.model";
+option java_multiple_files = true;
+
+enum Grade {
+    FEMALE = 0;
+    MALE = 1;
+}
+
+message ProfileEntity {
+  string photo_uri = 1;
+  string name = 2;
+  Grade grade = 3;
+  string url = 4;
+}
