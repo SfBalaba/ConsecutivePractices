@@ -24,13 +24,15 @@ class ProfileViewModel(
             repository.observeProfile().collect {
                 mutableState.name = it.name
                 mutableState.photoUri = Uri.parse(it.photoUri)
+                mutableState.url = it.url
+
             }
         }
     }
 
-    private class MutableProfileState: ProfileState {
+    private class MutableProfileState() : ProfileState {
         override var name by mutableStateOf("")
         override var photoUri by mutableStateOf(Uri.EMPTY)
-
+        override var url by mutableStateOf("")
     }
 }

@@ -86,7 +86,7 @@ fun ProfileScreen(navController: NavHostController) {
             Text(text = state.name, style = MaterialTheme.typography.bodyLarge)
             Button(onClick = {
                 enqueueDownloadRequest(
-                    "https://www.superjob.ru/print/resume/frontend-razrabotchik-46122794.html?pdf=1",
+                    state.url,
                     context
                 )
             }) {
@@ -115,7 +115,7 @@ private fun enqueueDownloadRequest(
     val request: DownloadManager.Request = DownloadManager.Request(Uri.parse(url))
     with(request) {
         setTitle("Test pdf")
-        setMimeType("application/pdf")
+        setMimeType("pdf")
         setDescription("Downloading pdf...")
         setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
         setDestinationInExternalPublicDir(
