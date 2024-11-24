@@ -16,7 +16,7 @@ interface MovieApi {
             @Query("notNullFields") notNullFields: List<String>,
             @Query("sortField") sortField: List<String>,
             @Query("type") type: List<String>,
-//            @Query("status") status: List<String>,
+            @Query("status") status: List<String>,
             @Query("sortType") sortType: String,
         ): MoviesPagingResponse
 

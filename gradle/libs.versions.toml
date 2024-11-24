@@ -10,9 +10,8 @@ kotlinxCoroutinesAndroid = "1.6.0"
 lifecycleRuntimeKtx = "2.8.6"
 activityCompose = "1.9.2"
 composeBom = "2024.04.01"
-#lifecycleRuntimeKtxVersion = "2.5.1"
-#lifecycleViewmodelCompose = "2.5.0"
-#lifecycleViewmodelKtx = "2.5.1"
+protobufJavalite = "3.21.11"
+protobufKotlinLite = "3.21.11"
 material = "1.2.0"
 navigationCompose = "2.8.3"
 converterGson = "2.11.0"
@@ -21,12 +20,25 @@ koinAndroid = "4.0.0"
 koinAndroidxCompose = "4.0.0"
 koinCompose = "4.0.0"
 navigationComposeVersion = "2.5.0"
+datastorePreferences = "1.1.1"
 retrofit = "2.11.0"
 composeWheelPicker = "1.0.0-beta05"
 ui = "1.2.0"
 uiTooling = "1.2.0"
+datastoreCoreAndroid = "1.1.1"
+roomCommon = "2.6.1"
+roomCompiler = "2.6.1"
+roomKtx = "2.6.1"
+threetenabp = "1.4.7"
 
 [libraries]
+threetenabp = { module = "com.jakewharton.threetenabp:threetenabp", version.ref = "threetenabp" }
+androidx-datastore = { module = "androidx.datastore:datastore", version.ref = "datastorePreferences" }
+protobuf-javalite = { module = "com.google.protobuf:protobuf-javalite", version.ref = "protobufJavalite" }
+protobuf-kotlin-lite = { module = "com.google.protobuf:protobuf-kotlin-lite", version.ref = "protobufKotlinLite" }
+androidx-room-common = { group = "androidx.room", name = "room-common", version.ref = "roomCommon" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "roomCompiler" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomKtx" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-lifecycle-runtime-ktx-v251 = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
@@ -61,8 +73,12 @@ compose-wheelPicker = { module = "com.github.zj565061763:compose-wheel-picker", 
 ui = { module = "androidx.compose.ui:ui", version.ref = "ui" }
 ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "uiTooling" }
 ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+androidx-datastore-core-android = { group = "androidx.datastore", name = "datastore-core-android", version.ref = "datastoreCoreAndroid" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+
 
