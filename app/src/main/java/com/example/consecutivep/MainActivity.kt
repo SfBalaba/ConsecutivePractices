@@ -28,6 +28,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.core.app.NotificationManagerCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.NavController
@@ -36,6 +37,7 @@ import com.example.consecutivep.utils.LocalUtils.isFilter
 
 import com.example.consecutivep.components.MovieViewModel
 import com.example.consecutivep.presentation.model.MovieUiModel
+import com.example.consecutivep.presentation.profile.channelManager.NotificationChannelManager
 import com.example.consecutivep.presentation.profile.screen.EditProfileScreen
 import com.example.consecutivep.presentation.profile.screen.ProfileScreen
 import com.example.consecutivep.screens.FavoritesScreen
@@ -46,9 +48,15 @@ import com.example.consecutivepracts.screens.SettingsScreen
 import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {
+    private val channelManager: NotificationChannelManager by lazy {
+        NotificationChannelManager(NotificationManagerCompat.from(this), this)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        channelManager.createNotificationChannels()
+
         setContent {
                 MainScreen()
         }

@@ -13,6 +13,7 @@ import com.example.consecutivep.datastore.DataStoreManager
 import com.example.consecutivep.domain.model.ProfileEntity
 import com.example.consecutivep.domain.repository.IProfileRepository
 import com.example.consecutivep.presentation.mapper.MovieUiMapper
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -28,6 +29,6 @@ val rootModule = module {
     single { DataStoreManager(get()) }
     viewModel { MovieViewModel(get(), get(), get()) }
     viewModel { ProfileViewModel(get()) }
-    viewModel { EditProfileViewModel(get()) }
+    viewModel { EditProfileViewModel(get(), it.get(), androidContext()) }
 
 }
