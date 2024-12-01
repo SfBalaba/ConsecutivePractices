@@ -6,4 +6,7 @@
     <string name="edit_profile">Редактирование</string>
     <string name="notifications_channel_id">Нотификашечки</string>
     <string name="notifications_channel_name">Сработало напоминание</string>
+    <string name="video_url">https://www.w3schools.com/tags/mov_bbb.mp4</string>
+
+    video_url
 </resources>

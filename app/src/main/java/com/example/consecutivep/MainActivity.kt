@@ -36,7 +36,6 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.consecutivep.utils.LocalUtils.isFilter
 
 import com.example.consecutivep.components.MovieViewModel
-import com.example.consecutivep.presentation.model.MovieUiModel
 import com.example.consecutivep.presentation.profile.channelManager.NotificationChannelManager
 import com.example.consecutivep.presentation.profile.screen.EditProfileScreen
 import com.example.consecutivep.presentation.profile.screen.ProfileScreen
@@ -44,6 +43,7 @@ import com.example.consecutivep.screens.FavoritesScreen
 import com.example.consecutivepracts.screens.HomeScreen
 import com.example.consecutivepracts.screens.MovieDetailScreen
 import com.example.consecutivep.screens.MovieListScreen
+import com.example.consecutivep.screens.VideoPlayerScreen
 import com.example.consecutivepracts.screens.SettingsScreen
 import org.koin.androidx.compose.koinViewModel
 
@@ -128,6 +128,10 @@ fun MainScreen() {
                     }
             }
 
+            composable("player") {
+                currentDestination = "player"
+                VideoPlayerScreen()
+            }
             composable("home") {
                 currentDestination = "home"
                 HomeScreen()
@@ -162,6 +166,7 @@ fun BottomNavigationBar(navController: NavController, currentDestination: String
     ) {
         val items = listOf(
             BottomNavItem("Home", "home", R.drawable.home),
+            BottomNavItem("Player", "player", R.drawable.video),
             BottomNavItem("Movies", "movies", R.drawable.list),
             BottomNavItem("Settings", "settings", R.drawable.settings),
             BottomNavItem("favorites", "favorites", R.drawable.favorite),
